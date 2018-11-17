@@ -35,6 +35,8 @@ public class MainActivity extends HiddenCameraActivity {
     private CameraConfig mCameraConfig;
     private WebView mWebView;
 
+    boolean isActive;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +73,15 @@ public class MainActivity extends HiddenCameraActivity {
         @Override
         public void run() {
             runPaws();
-            handler.postDelayed(this, 3000);
+            if (isActive)
+                handler.postDelayed(this, 3000);
         }
     };
 
     private void initPaws() {
         Log.d(getClass().getSimpleName(), "Paws: initPaws: Initiated");
+
+        isActive = true;
         handler.postDelayed(runnable, 3000);
     }
 
@@ -91,17 +96,20 @@ public class MainActivity extends HiddenCameraActivity {
     protected void onStop() {
         super.onStop();
         stopCamera();
+        isActive = false;
     }
 
     @Override
     public void onPause() {
         super.onPause();
         stopCamera();
+        isActive = false;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        isActive = true;
 
         initPermission();
     }
@@ -153,7 +161,7 @@ public class MainActivity extends HiddenCameraActivity {
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
 
         Toast.makeText(getApplicationContext(), imageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-
+        Log.d(getClass().getSimpleName(), "Paws: onImageCapture: " + imageFile.getAbsolutePath());
         //Display the image to the image view
         ((ImageView) findViewById(R.id.cam_prev)).setImageBitmap(bitmap);
     }
