@@ -6,8 +6,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -70,10 +72,33 @@ public class MainActivity extends HiddenCameraActivity {
 
         mWebView = findViewById(R.id.web_view);
         initWebView();
+
+        initPaws();
+    }
+
+    private Handler handler = new Handler();
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            runPaws();
+            handler.postDelayed(this, 3000);
+        }
+    };
+
+    private void initPaws() {
+        Log.d(getClass().getSimpleName(), "initPaws: Initiated");
+        handler.postDelayed(runnable, 3000);
+    }
+
+    private void runPaws() {
+        Log.d(getClass().getSimpleName(), "runPaws: Running");
+
+        // HERE: Paws Analytics
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
+        Log.d(getClass().getSimpleName(), "initWebView: Initiated");
         // Enable Javascript
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
