@@ -45,7 +45,7 @@ public class MainActivity extends HiddenCameraActivity {
         mCameraConfig = new CameraConfig()
                 .getBuilder(this)
                 .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
-                .setCameraResolution(CameraResolution.HIGH_RESOLUTION)
+                .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
                 .setImageFormat(CameraImageFormat.FORMAT_JPEG)
                 .setImageRotation(CameraRotation.ROTATION_270)
                 .setCameraFocus(CameraFocus.AUTO)
