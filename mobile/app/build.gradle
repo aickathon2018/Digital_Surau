@@ -24,4 +24,6 @@ dependencies {
 
     implementation 'io.github.fentonmartin:aappz:0.7.0'
     implementation 'com.kevalpatel2106:hiddencamera:1.3.5'
+
+    implementation 'com.koushikdutta.ion:ion:2.2.1'
 }

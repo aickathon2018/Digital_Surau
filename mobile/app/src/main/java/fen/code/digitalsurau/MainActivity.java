@@ -26,6 +26,9 @@ import com.androidhiddencamera.config.CameraFocus;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
 import com.androidhiddencamera.config.CameraRotation;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import java.io.File;
 
@@ -74,7 +77,7 @@ public class MainActivity extends HiddenCameraActivity {
         public void run() {
             runPaws();
             if (isActive)
-                handler.postDelayed(this, 3000);
+                handler.postDelayed(this, 10000);
         }
     };
 
@@ -82,7 +85,7 @@ public class MainActivity extends HiddenCameraActivity {
         Log.d(getClass().getSimpleName(), "Paws: initPaws: Initiated");
 
         isActive = true;
-        handler.postDelayed(runnable, 3000);
+        handler.postDelayed(runnable, 10000);
     }
 
     private void runPaws() {
@@ -164,6 +167,25 @@ public class MainActivity extends HiddenCameraActivity {
         Log.d(getClass().getSimpleName(), "Paws: onImageCapture: " + imageFile.getAbsolutePath());
         //Display the image to the image view
         ((ImageView) findViewById(R.id.cam_prev)).setImageBitmap(bitmap);
+
+        sendData(imageFile);
+    }
+
+    private void sendData(File file) {
+        Log.d(getClass().getSimpleName(), "Paws: sendData: Initiated");
+        Ion.with(getApplicationContext())
+                .load("https://face.recoqnitics.com/analyze")
+                .setMultipartParameter("access_key", "2f59d21b9433edb14b48")
+                .setMultipartParameter("secret_key", "d4da3007a94e8acd6adc5631885d406e79549deb")
+                .setMultipartFile("filename", "application/jpeg", file)
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        Log.d(getClass().getSimpleName(), "Paws: sendData: " + result);
+
+                    }
+                });
     }
 
     @Override
