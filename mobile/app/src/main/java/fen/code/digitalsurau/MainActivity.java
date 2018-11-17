@@ -49,17 +49,7 @@ public class MainActivity extends HiddenCameraActivity {
                 .setCameraFocus(CameraFocus.AUTO)
                 .build();
 
-
-        //Check for the camera permission for the runtime
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED) {
-
-            //Start camera preview
-            startCamera(mCameraConfig);
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
-                    REQ_CODE_CAMERA_PERMISSION);
-        }
+        initPermission();
 
         //Take a picture
         findViewById(R.id.capture_btn).setOnClickListener(new View.OnClickListener() {
@@ -86,19 +76,39 @@ public class MainActivity extends HiddenCameraActivity {
     };
 
     private void initPaws() {
-        Log.d(getClass().getSimpleName(), "initPaws: Initiated");
+        Log.d(getClass().getSimpleName(), "Paws: initPaws: Initiated");
         handler.postDelayed(runnable, 3000);
     }
 
     private void runPaws() {
-        Log.d(getClass().getSimpleName(), "runPaws: Running");
+        Log.d(getClass().getSimpleName(), "Paws: runPaws: Running");
 
         // HERE: Paws Analytics
+        takePicture();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopCamera();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopCamera();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        initPermission();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
-        Log.d(getClass().getSimpleName(), "initWebView: Initiated");
+        Log.d(getClass().getSimpleName(), "Paws: initWebView: Initiated");
         // Enable Javascript
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -142,6 +152,8 @@ public class MainActivity extends HiddenCameraActivity {
         options.inPreferredConfig = Bitmap.Config.RGB_565;
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
 
+        Toast.makeText(getApplicationContext(), imageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+
         //Display the image to the image view
         ((ImageView) findViewById(R.id.cam_prev)).setImageBitmap(bitmap);
     }
@@ -171,6 +183,20 @@ public class MainActivity extends HiddenCameraActivity {
             case CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA:
                 Toast.makeText(this, R.string.error_not_having_camera, Toast.LENGTH_LONG).show();
                 break;
+        }
+    }
+
+    private void initPermission() {
+        Log.d(getClass().getSimpleName(), "Paws: initPermission: Initiated");
+        //Check for the camera permission for the runtime
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            //Start camera preview
+            startCamera(mCameraConfig);
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                    REQ_CODE_CAMERA_PERMISSION);
         }
     }
 }
