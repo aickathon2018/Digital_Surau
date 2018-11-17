@@ -15,7 +15,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.androidhiddencamera.CameraConfig;
 import com.androidhiddencamera.CameraError;
@@ -147,7 +146,7 @@ public class MainActivity extends HiddenCameraActivity {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startCamera(mCameraConfig);
             } else {
-                Toast.makeText(this, R.string.error_camera_permission_denied, Toast.LENGTH_LONG).show();
+                Log.d(getClass().getSimpleName(), getString(R.string.error_camera_permission_denied));
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -163,7 +162,6 @@ public class MainActivity extends HiddenCameraActivity {
         options.inPreferredConfig = Bitmap.Config.RGB_565;
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
 
-        Toast.makeText(getApplicationContext(), imageFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
         Log.d(getClass().getSimpleName(), "Paws: onImageCapture: " + imageFile.getAbsolutePath());
         //Display the image to the image view
         ((ImageView) findViewById(R.id.cam_prev)).setImageBitmap(bitmap);
@@ -173,10 +171,16 @@ public class MainActivity extends HiddenCameraActivity {
 
     private void sendData(File file) {
         Log.d(getClass().getSimpleName(), "Paws: sendData: Initiated");
+
+        // Enable global Ion logging
+        Ion.getDefault(getApplicationContext()).configure().setLogging("Paws Ion", Log.DEBUG);
+        Ion.getDefault(getApplicationContext()).configure().getResponseCache().setCaching(false);
+
         Ion.with(getApplicationContext())
-                .load("https://face.recoqnitics.com/analyze")
-                .setMultipartParameter("access_key", "2f59d21b9433edb14b48")
-                .setMultipartParameter("secret_key", "d4da3007a94e8acd6adc5631885d406e79549deb")
+                .load("POST", "https://face.recoqnitics.com/analyze")
+                .addHeader("Content-Type", "application/json")
+                .addQuery("access_key", "2f59d21b9433edb14b48")
+                .addQuery("secret_key", "d4da3007a94e8acd6adc5631885d406e79549deb")
                 .setMultipartFile("filename", "application/jpeg", file)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
@@ -194,16 +198,16 @@ public class MainActivity extends HiddenCameraActivity {
             case CameraError.ERROR_CAMERA_OPEN_FAILED:
                 //Camera open failed. Probably because another application
                 //is using the camera
-                Toast.makeText(this, R.string.error_cannot_open, Toast.LENGTH_LONG).show();
+                Log.d(getClass().getSimpleName(), getString(R.string.error_cannot_open));
                 break;
             case CameraError.ERROR_IMAGE_WRITE_FAILED:
                 //Image write failed. Please check if you have provided WRITE_EXTERNAL_STORAGE permission
-                Toast.makeText(this, R.string.error_cannot_write, Toast.LENGTH_LONG).show();
+                Log.d(getClass().getSimpleName(), getString(R.string.error_cannot_write));
                 break;
             case CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE:
                 //camera permission is not available
                 //Ask for the camera permission before initializing it.
-                Toast.makeText(this, R.string.error_cannot_get_permission, Toast.LENGTH_LONG).show();
+                Log.d(getClass().getSimpleName(), getString(R.string.error_cannot_get_permission));
                 break;
             case CameraError.ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION:
                 //Display information dialog to the user with steps to grant "Draw over other app"
@@ -211,7 +215,7 @@ public class MainActivity extends HiddenCameraActivity {
                 HiddenCameraUtils.openDrawOverPermissionSetting(this);
                 break;
             case CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA:
-                Toast.makeText(this, R.string.error_not_having_camera, Toast.LENGTH_LONG).show();
+                Log.d(getClass().getSimpleName(), getString(R.string.error_not_having_camera));
                 break;
         }
     }
