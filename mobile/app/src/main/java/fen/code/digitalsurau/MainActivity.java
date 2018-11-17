@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -70,8 +72,23 @@ public class MainActivity extends HiddenCameraActivity {
         initWebView();
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
-        mWebView.loadUrl("https://www.debusana.com/set-outer");
+        // Enable Javascript
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        mWebView.setWebViewClient(new WebViewClient() {
+            //If you will not use this method url links are open in new browser not in webview
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+
+            public void onPageFinished(WebView view, String url) {
+            }
+        });
+        mWebView.loadUrl("https://www.debusana.com/new-products");
     }
 
     @SuppressLint("MissingPermission")
