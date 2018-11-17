@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class MainActivity extends HiddenCameraActivity {
     private static final int REQ_CODE_CAMERA_PERMISSION = 1253;
 
     private CameraConfig mCameraConfig;
+    private WebView mWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,13 @@ public class MainActivity extends HiddenCameraActivity {
                 takePicture();
             }
         });
+
+        mWebView = findViewById(R.id.web_view);
+        initWebView();
+    }
+
+    private void initWebView() {
+        mWebView.loadUrl("https://www.debusana.com/set-outer");
     }
 
     @SuppressLint("MissingPermission")
