@@ -15,10 +15,10 @@ class M_admin extends CI_Model{
 public function read($link = FALSE)
   {
     if ($link === FALSE) {
-      $query = $this->db->get('laporan');
+      $query = $this->db->get('emotion');
       return $query->result_array();
     } else {
-      $query = $this->db->get_where('laporan', array('id_laporan' => $link));
+      $query = $this->db->get_where('emotion', array('id_customer' => $link));
       return $query->row();
     }
   }

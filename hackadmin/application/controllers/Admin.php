@@ -7,15 +7,23 @@ class Admin extends CI_Controller {
 	  {
 	    parent::__construct();
 	    $this->load->helper('url');
+			$this->load->library('session');
 	    $this->load->model('M_admin', 'admin');
 	  }
 
 	public function index()
 	{
-		$this->load->view('header');
+		// if ($this->session->has_userdata('username')){
+
+  	//$data['username'] = $this->session->has_userdata('username');
+    $this->load->view('header');
 		$this->load->view('sidemenu');
+    //$this->load->view('home', $data);
 		$this->load->view('index');
-		$this->load->view('footer');
+    $this->load->view('footer');
+    // } else {
+    //   redirect('admin/login');
+    // }
 	}
 
 	public function haha()
