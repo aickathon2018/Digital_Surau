@@ -21,6 +21,22 @@
 		<link rel="stylesheet" href="<?php echo site_url('asset/vendor/magnific-popup/magnific-popup.css'); ?>" />
 		<link rel="stylesheet" href="<?php echo site_url('asset/vendor/bootstrap-datepicker/css/datepicker3.css'); ?>" />
 
+	<?php if (uri_string() == "" || uri_string() == "admin") { ?>
+    <!-- Specific Page Vendor CSS -->
+    <link rel="stylesheet" href="<?php echo site_url('asset/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo site_url('asset/vendor/bootstrap-multiselect/bootstrap-multiselect.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo site_url('asset/vendor/morris/morris.css'); ?>" />
+  <?php } elseif ($_SERVER['REQUEST_URI'] === "/hackadmin/admin/listEmotion") { ?>
+			<!-- Specific Page Vendor CSS -->
+			<link rel="stylesheet" href="<?php echo site_url('asset/vendor/select2/select2.css'); ?>" />
+			<link rel="stylesheet" href="<?php echo site_url('asset/vendor/jquery-datatables-bs3/assets/css/datatables.css'); ?>" />
+  <?php } elseif ($_SERVER['REQUEST_URI'] === "/hackadmin/admin/produk") {?>
+		<!-- Specific Page Vendor CSS -->
+		<link rel="stylesheet" href="<?php echo site_url('asset/vendor/isotope/jquery.isotope.css'); ?>" />
+		<link rel="stylesheet" href="<?php echo site_url('asset/vendor/morris/morris.css'); ?>" />
+	<?php } ?>
+
+
 		<!-- Theme CSS -->
 		<link rel="stylesheet" href="<?php echo site_url('asset/stylesheets/theme.css'); ?>" />
 
@@ -32,17 +48,6 @@
 
 		<!-- Head Libs -->
 		<script src="<?php echo site_url('asset/vendor/modernizr/modernizr.js'); ?>"></script>
-
-    <?php if (uri_string() == "" || uri_string() == "admin") { ?>
-      <!-- Specific Page Vendor CSS -->
-      <link rel="stylesheet" href="<?php echo site_url('asset/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css'); ?>" />
-      <link rel="stylesheet" href="<?php echo site_url('asset/vendor/bootstrap-multiselect/bootstrap-multiselect.css'); ?>" />
-      <link rel="stylesheet" href="<?php echo site_url('asset/vendor/morris/morris.css'); ?>" />
-    <?php } elseif ($_SERVER['REQUEST_URI'] === "/hackadmin/admin/listEmotion") { ?>
-			<!-- Specific Page Vendor CSS -->
-			<link rel="stylesheet" href="assets/vendor/select2/select2.css" />
-			<link rel="stylesheet" href="assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
-    <?php } ?>
 
 	</head>
   <body>

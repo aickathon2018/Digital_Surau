@@ -12,15 +12,35 @@ class M_admin extends CI_Model{
     $this->load->database();
   }
 
-public function read($link = FALSE)
+  public function read($link = FALSE)
   {
     if ($link === FALSE) {
       $query = $this->db->get('emotion');
       return $query->result_array();
     } else {
-      $query = $this->db->get_where('emotion', array('id_customer' => $link));
+      $query = $this->db->get_where('produk', array('id_produk' => $link));
       return $query->row();
     }
+  }
+
+  public function readEmotion($link)
+  {
+    $query = $this->db->get_where('emotion', array('id_produk' => $link));
+    $array = $query->result_array();
+    // foreach($array as $item) {
+    //     $angry += $item['angry'];
+    //     $disgust += $item['disgust'];
+    //     $fear += $item['fear'];
+    //     $happy += $item['happy'];
+    //     $sad += $item['sad'];
+    //     $surprise += $item['surprise'];
+    //     $neutral += $item['neutral'];
+    //
+    //     // to know what's in $item
+    //     echo '<pre>'; var_dump($item);
+    // }
+    // print_r($array);
+    return $query->result_array();
   }
 
 public function readCount($time)
