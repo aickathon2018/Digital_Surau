@@ -40,4 +40,26 @@ class Admin extends CI_Controller {
 		$this->load->view('login');
 		$this->load->view('footer');
 	}
+
+	public function listEmotion()
+	{
+		$data['lists'] = $this->admin->read();
+
+		$this->load->view('header');
+		$this->load->view('sidemenu');
+		$this->load->view('table', $data);
+		$this->load->view('footer');
+	}
+
+	public function produk($link)
+	{
+		$data['produk'] = $this->admin->read($link);
+		$data['emotion'] = $this->admin->readEmotion($link);
+
+
+		$this->load->view('header');
+		$this->load->view('sidemenu');
+		$this->load->view('product', $data);
+		$this->load->view('footer');
+	}
 }
