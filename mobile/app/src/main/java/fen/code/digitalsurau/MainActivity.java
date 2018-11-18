@@ -181,7 +181,8 @@ public class MainActivity extends HiddenCameraActivity {
                 .addHeader("Content-Type", "application/json")
                 .addQuery("access_key", "2f59d21b9433edb14b48")
                 .addQuery("secret_key", "d4da3007a94e8acd6adc5631885d406e79549deb")
-                .setMultipartFile("filename", "application/jpeg", file)
+                .setMultipartParameter("filename", "filename")
+                .setMultipartFile("filename", "application/", file)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
